@@ -1,0 +1,9 @@
+services:
+  firebase:
+    build: ./docker
+    ports:
+      - 4000:4000
+      - 9099:9099
+    volumes:
+      - ./docker:/workspace
+    working_dir: /workspace
