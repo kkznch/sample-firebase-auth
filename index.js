@@ -17,15 +17,30 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+
+const emulatorUrl = import.meta.env.VITE_FIREBASE_AUTH_EMULATOR_URL;
+if (emulatorUrl) {
+  console.log('Run with emulator');
+  import('firebase/auth').then(({ connectAuthEmulator }) => {
+    connectAuthEmulator(auth, emulatorUrl);
+  });
+}
+
 const provider = new GoogleAuthProvider();
-const result = await getRedirectResult(auth);
-console.log(result);
+
+try {
+  const result = await getRedirectResult(auth);
+  console.log('resultです', result);
+} catch (e) {
+  console.log('ここでキャッチ');
+}
 
 const signIn = async () => {
   try {
     await signInWithRedirect(auth, provider);
+    console.log('リダイレクトされるのでここには入らない');
   } catch (e) {
-    console.error('キャンセルされたよ');
+    console.error('ここにも入らない');
   }
 };
 
